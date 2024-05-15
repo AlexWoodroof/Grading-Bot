@@ -22,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
   String _originalEmail = '';
   bool _isEmailAltered = false;
   bool _showPasswordMessage = false;
-  // String _originalApiKey = '';
+  // String _originalApiKey = 'sk-proj-iq5yFX5XczBPlOzBqI7ZT3BlbkFJ5FmtsrG135dZew5evWb9'; This shouldn't be required...But if it's not working just uncomment this line.
 
   @override
   void initState() {

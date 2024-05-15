@@ -205,7 +205,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
       try {
         final chatCompletion = await OpenAI.instance.chat.create(
-          model: "gpt-3.5-turbo-1106", // Your model name here
+          model: "gpt-3.5-turbo-1106", // Your model name here - gpt-4o
           messages: _getChatHistory(),
         );
 
