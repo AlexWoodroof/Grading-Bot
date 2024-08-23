@@ -11,7 +11,7 @@ GradingBot is a powerful and intuitive essay marking tool designed to help lectu
 - [Usage](#usage)
   - [Uploading Essays](#uploading-essays)
   - [Setting the Marking Scheme](#setting-the-marking-scheme)
-  - [Training the Model](#training-the-model)
+  - [Increasing Model Accuracy](#increasing-model-accuracy)
   - [Grading Essays](#grading-essays)
   - [Downloading Marked Essays](#downloading-marked-essays)
 - [Configuration](#configuration)
@@ -21,7 +21,7 @@ GradingBot is a powerful and intuitive essay marking tool designed to help lectu
 
 ## Features
 
-- **Mass Uploading**: Upload multiple student essays in PDF format at once.
+- **Batch Uploading**: Upload multiple student essays in PDF format at once.
 - **Custom Marking Schemes**: Define custom marking criteria tailored to your course requirements.
 - **AI-Powered Grading**: Automatically grade essays using OpenAI's ChatGPT, ensuring consistency and depth in feedback.
 - **Example-Based Training**: Provide examples of marked essays to help train the AI for better accuracy.
@@ -72,7 +72,7 @@ After uploading the essays, you'll be prompted to define your marking scheme. Th
 
 You can adjust the weight of each criterion according to its importance.
 
-### Training the Model
+### Increasing Model Accuracy
 
 To improve the accuracy of the AI grading, you can upload previously marked essays as examples. These examples will help the AI understand your specific marking preferences and criteria.
 
@@ -86,7 +86,7 @@ Once the essays and marking scheme are uploaded, GradingBot will begin the gradi
 
 1. The AI will assess each essay according to the provided marking scheme.
 2. You can monitor the grading process in real-time.
-3. The AI will generate detailed feedback and a grade for each essay.
+3. The AI will generate detailed feedback and a grade/grading weights for each essay.
 
 ### Downloading Marked Essays
 
