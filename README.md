@@ -38,7 +38,7 @@ To install GradingBot, clone this repository and install the necessary dependenc
 
 ```bash
 git clone https://github.com/AlexWoodroof/GradingBot.git
-cd GradingBot
+cd automated_marking_tool
 flutter pub get
 ```
 
