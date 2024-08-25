@@ -34,18 +34,20 @@
 ### Installation
 
 To install GradingBot, clone this repository and install the necessary dependencies.
+#You will require flutter for this step: [How to install](https://www.geeksforgeeks.org/how-to-install-flutter-on-visual-studio-code/)
 
 ```bash
-git clone https://github.com/yourusername/GradingBot.git
+git clone https://github.com/AlexWoodroof/GradingBot.git
 cd GradingBot
-pip install -r requirements.txt
+flutter pub get
 ```
 
 ### Prerequisites
 
 Before you begin (or access the [web version](https://automated-marking-tool.web.app/)), ensure you have the following:
 
-- Python 3.7 or higher
+- Dart
+- Flutter
 - An OpenAI API key (for accessing ChatGPT)
 
 ## Usage
@@ -63,7 +65,7 @@ Switch between projects by selecting navigating back to the main menu and using 
 2. Launch the application:
    
     ```bash
-    python gradingbot.py
+    flutter run
     # This command will run the project
     ```
 . Use the interface to upload student essays in PDF format. You can upload multiple files at once.
@@ -104,11 +106,11 @@ After grading is complete, you can download all marked essays in a single PDF fi
 
 ## Configuration
 
-GradingBot is highly configurable. You can modify the following settings in the `config.json` file:
+GradingBot is highly configurable. You can modify the following configurations in their associated areas:
 
-- **API Key**: Your OpenAI API key.
-- **Marking Scheme Defaults**: Set default marking criteria and their weights.
-- **PDF Output Settings**: Customize the appearance of the output PDF (e.g., font size, header, and footer text).
+- **API Key**: Your OpenAI API key. The settings page or can be hardcoded
+- **Marking Scheme Defaults**: Set default marking criteria and their weights. Within a project - on the criteria tab.
+- **AI Marking Model**: You can change the hardcoded model that the interface uses or the prompt (however i have refined this prompt to give **me** the best results) - This can be done on the  
 
 ## Limitations
 
