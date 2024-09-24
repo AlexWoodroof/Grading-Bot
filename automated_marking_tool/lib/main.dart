@@ -9,10 +9,15 @@ import 'package:provider/provider.dart';
 import 'Providers/project_provider.dart';
 import 'package:automated_marking_tool/Theme/AppTheme.dart';
 import 'package:automated_marking_tool/Theme/ThemeNotifier.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Load environment variables
+  await dotenv.load(fileName: ".env.local"); // Load the .env.local file
+
+  // Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -29,7 +34,6 @@ void main() async {
     ),
   );
 }
-
 
 Future<void> _fetchAndSetApiKey() async {
   final user = FirebaseAuth.instance.currentUser;
@@ -50,7 +54,7 @@ Future<void> _fetchAndSetApiKey() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
+  const MyApp({Key? key}) : super(key: key); // Added the missing super call
 
   @override
   Widget build(BuildContext context) {
