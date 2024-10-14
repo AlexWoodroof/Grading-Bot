@@ -5,7 +5,7 @@
 -	I’d make it more modular. Separate functions into constituent components, same with UI/Layout, I’d create widgets for each piece of the layout. This goes for different packages as well…things like database access or model prompting could be made more abstract. Means you could implement the usage of different LLM models like Claude and allow the user to select.
 
 #### Steps:
--	Start by moving the login and registration system across. For the most part, this section is still intact and functional. You’ll need to recreate the firebase project and add it to the flutter project using flutterfire. Or implement your own database solution. (In the case of firebase, you can access the local environment variable in the /assets/.env.local which will ensure firebase API keys are not leaked upon github upload)
+-	Start by moving the login and registration system across. For the most part, this section is still intact and functional. You’ll need to recreate the firebase project and add it to the flutter project using flutterfire. Or implement your own database solution. (In the case of firebase, you can access the local environment variable in the /assets/.env.local)
 -	Then look at the landing screen (currently a carousel but not really necessary unless you want to change) – could add feature so instead of just a chat screen, it is instead a page in which the teacher/lecturer can ask questions about the marking of that persons work. For examples of each of the criteria and whatnot.
 -	Then look into how you want to approach the rest of it. The essay screens…
 
