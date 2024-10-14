@@ -47,14 +47,14 @@ Future<void> _fetchAndSetApiKey() async {
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         String apiKey = documentSnapshot['apiKey'] ?? '';
-        OpenAI.apiKey = apiKey; // Set API Key for OpenAI
+        OpenAI.apiKey = apiKey;
       }
     });
   }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key); // Added the missing super call
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

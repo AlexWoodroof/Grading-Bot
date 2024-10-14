@@ -11,9 +11,10 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final TextEditingController _apiKeyController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _currentPasswordController = TextEditingController();
+  final TextEditingController _currentPasswordController =
+      TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
-  final _isAPIAltered = false;
+  bool _isAPIAltered = false;
   // bool _showEmailMessage = false;
   User? _user; // To store the current user
   bool _showCurrentPassword = false;
@@ -22,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
   String _originalEmail = '';
   bool _isEmailAltered = false;
   bool _showPasswordMessage = false;
-  // String _originalApiKey = 'sk-proj-iq5yFX5XczBPlOzBqI7ZT3BlbkFJ5FmtsrG135dZew5evWb9'; This shouldn't be required...But if it's not working just uncomment this line.
+  // String _originalApiKey = '';
 
   @override
   void initState() {
@@ -71,8 +72,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (user != null) {
       // Retrieve email from Firestore
-      final documentSnapshot =
-          await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      final documentSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
 
       if (documentSnapshot.exists) {
         if (mounted) {
@@ -90,8 +93,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (user != null) {
       // Retrieve API Key from Firestore
-      final documentSnapshot =
-          await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      final documentSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
 
       if (documentSnapshot.exists) {
         if (mounted) {
@@ -112,8 +117,8 @@ class _SettingsPageState extends State<SettingsPage> {
       String currentPassword = _currentPasswordController.text;
 
       // Create a credential with the user's email and password
-      AuthCredential credential =
-          EmailAuthProvider.credential(email: user.email!, password: currentPassword);
+      AuthCredential credential = EmailAuthProvider.credential(
+          email: user.email!, password: currentPassword);
 
       // Reauthenticate the user with the credential
       try {
@@ -129,7 +134,15 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _saveChanges() async {
-
+    if (_currentPasswordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please enter your current password to apply changes.'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+      return;
+    }
     await _reauthenticateUser(); // Reauthenticate the user before making changes
 
     if (_userVerified) {
@@ -145,7 +158,9 @@ class _SettingsPageState extends State<SettingsPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              backgroundColor: Theme.of(context).colorScheme.background, // Set background color
+              backgroundColor: Theme.of(context)
+                  .colorScheme
+                  .background, // Set background color
               title: Text(
                 'Action Required',
                 style: AppTheme.defaultBodyText(context), // Set title style
@@ -161,7 +176,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                   child: Text(
                     'OK',
-                    style: AppTheme.defaultBodyText(context), // Set button style
+                    style:
+                        AppTheme.defaultBodyText(context), // Set button style
                   ),
                 ),
               ],
@@ -187,8 +203,13 @@ class _SettingsPageState extends State<SettingsPage> {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      String newEmail = _emailController.text;//.trim();
+      String newEmail = _emailController.text; //.trim();
       String currentEmail = user.email ?? '';
+
+      if (newEmail == currentEmail) {
+        print("Email unchanged, skipping update");
+        return;
+      }
 
       try {
         // Update the user's email in Firebase Authentication
@@ -196,9 +217,11 @@ class _SettingsPageState extends State<SettingsPage> {
         print("Email update requested, please verify on the provided email");
 
         // Listen for changes in authentication state
-        print("User Account: $user");// - Verified User: ${user.emailVerified}");
+        print(
+            "User Account: $user"); // - Verified User: ${user.emailVerified}");
         FirebaseAuth.instance.authStateChanges().listen((User? user) async {
-          if (user != null) {// && user.emailVerified) { // Need to implement email verification upon registration
+          if (user != null) {
+            // && user.emailVerified) { // Need to implement email verification upon registration
             // User's email has been verified, update email in Firestore
             await FirebaseFirestore.instance
                 .collection('users')
@@ -225,7 +248,6 @@ class _SettingsPageState extends State<SettingsPage> {
       }
     }
   }
-
 
   Future<void> _saveApiKey() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -331,8 +353,15 @@ class _SettingsPageState extends State<SettingsPage> {
                       }
                     },
                     cursorColor: Theme.of(context).colorScheme.secondary,
-                    decoration: AppTheme.inputBoxDecoration(context, '', false, _showCurrentPassword, _toggleCurrentPasswordVisibility, 'Enter your API key'),
-                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                    decoration: AppTheme.inputBoxDecoration(
+                        context,
+                        '',
+                        false,
+                        _showCurrentPassword,
+                        _toggleCurrentPasswordVisibility,
+                        'Enter your API key'),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         if (mounted) {
@@ -356,15 +385,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     Container(
                       padding: EdgeInsets.fromLTRB(16, 0, 16, 4),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Theme.of(context).colorScheme.error),
+                        border: Border.all(
+                            color: Theme.of(context).colorScheme.error),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Center( // Wrap the Text widget with Center
+                      child: Center(
+                        // Wrap the Text widget with Center
                         child: Text(
                           '\n **Caution** \n\n'
                           '  Ensure Correct Email Entry! Incorrect information may lead to loss of account access. Verify your email carefully.\n',
                           style: AppTheme.defaultBodyText(context),
-                          textAlign: TextAlign.center, // Align the text to the center
+                          textAlign:
+                              TextAlign.center, // Align the text to the center
                         ),
                       ),
                     ),
@@ -437,8 +469,15 @@ class _SettingsPageState extends State<SettingsPage> {
                     // focusNode: _passwordFocusNode,
                     controller: _newPasswordController,
                     cursorColor: Theme.of(context).colorScheme.secondary,
-                    decoration: AppTheme.inputBoxDecoration(context, '', true, _showNewPassword, _toggleNewPasswordVisibility, 'Enter your new password'),
-                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                    decoration: AppTheme.inputBoxDecoration(
+                        context,
+                        '',
+                        true,
+                        _showNewPassword,
+                        _toggleNewPasswordVisibility,
+                        'Enter your new password'),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary),
                     obscureText: !_showNewPassword,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -463,15 +502,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     Container(
                       padding: EdgeInsets.fromLTRB(16, 0, 16, 4),
                       decoration: BoxDecoration(
-                        border: Border.all(color: Theme.of(context).colorScheme.error),
+                        border: Border.all(
+                            color: Theme.of(context).colorScheme.error),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Center( // Wrap the Text widget with Center
+                      child: Center(
+                        // Wrap the Text widget with Center
                         child: Text(
                           '\n **Caution** \n\n'
                           '  Ensure Correct Password Entry! Incorrect information may lead to loss of account access. Verify your new password carefully.\n',
                           style: AppTheme.defaultBodyText(context),
-                          textAlign: TextAlign.center, // Align the text to the center
+                          textAlign:
+                              TextAlign.center, // Align the text to the center
                         ),
                       ),
                     ),
@@ -496,9 +538,21 @@ class _SettingsPageState extends State<SettingsPage> {
                       Expanded(
                         child: TextFormField(
                           controller: _apiKeyController,
+                          onChanged: (value) {
+                            setState(() {
+                              _isAPIAltered = true;
+                            });
+                          },
                           cursorColor: Theme.of(context).colorScheme.secondary,
-                          decoration: AppTheme.inputBoxDecoration(context, '', false, _showCurrentPassword, _toggleCurrentPasswordVisibility, 'Enter your API key'),
-                          style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                          decoration: AppTheme.inputBoxDecoration(
+                              context,
+                              '',
+                              false,
+                              _showCurrentPassword,
+                              _toggleCurrentPasswordVisibility,
+                              'Enter your API key'),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               if (mounted) {
@@ -541,15 +595,17 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 ],
-              ),    
-            ),        
+              ),
+            ),
             SizedBox(height: 16),
 
             // Division Line
             Container(
               width: MediaQuery.of(context).size.width / 3,
               height: 1,
-              color: Theme.of(context).colorScheme.secondary, // Adjust color as needed
+              color: Theme.of(context)
+                  .colorScheme
+                  .secondary, // Adjust color as needed
             ),
             SizedBox(height: 8),
 
@@ -568,8 +624,15 @@ class _SettingsPageState extends State<SettingsPage> {
                     // focusNode: _passwordFocusNode,
                     controller: _currentPasswordController,
                     cursorColor: Theme.of(context).colorScheme.secondary,
-                    decoration: AppTheme.inputBoxDecoration(context, '', true, _showCurrentPassword, _toggleCurrentPasswordVisibility, 'Enter your current password'),
-                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                    decoration: AppTheme.inputBoxDecoration(
+                        context,
+                        '',
+                        true,
+                        _showCurrentPassword,
+                        _toggleCurrentPasswordVisibility,
+                        'Enter your current password'),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary),
                     obscureText: !_showCurrentPassword,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
